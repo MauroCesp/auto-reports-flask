@@ -1,0 +1,141 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Web Stats {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="content">
+	<div class="page-inner">
+        <!-------------------------------------------------------------------------------------->
+        <!------------------------	 Page Header       ----------------------------------------->
+        <!-------------------------------------------------------------------------------------->
+		<div class="page-header">
+            <!-- This shows the main page where we are -->
+			<h4 class="page-title">Reports</h4>
+                
+            <!-------------------------------------------------------->
+			<ul class="breadcrumbs">
+				<li class="nav-home">
+					<a href="#">
+						<i class="flaticon-home"></i>
+					</a>
+				</li>
+				<li class="separator">
+					<i class="flaticon-right-arrow"></i>
+				</li>
+				<li class="nav-item">
+					<a href="#">Web Stats</a>
+				</li>
+				<li class="separator">
+					<i class="flaticon-right-arrow"></i>
+				</li>
+				<li class="nav-item">
+					<a href="#">New Report</a>
+				</li>
+			</ul>
+        	<!-------------------------------------------------------->
+                
+		</div>
+        <!-------------------------------------------------------------------------------------->
+        <!------------------------	 /Page Header      ----------------------------------------->
+        <!-------------------------------------------------------------------------------------->
+            
+            
+        <!-------------------------------------------------------------------------------------->
+        <!-----------------------	 Page Content      ----------------------------------------->
+        <!-------------------------------------------------------------------------------------->
+		<div class="row">
+                
+            <!------------------   FIRST ROW  -------------------------------------->
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+                        <div class="ml-md-auto py-2 py-md-0">
+                            <!-- Para poder mostrar la oipcion de upload en cada tipo de reporte necesito
+                            	darle un HREF a cada boton.
+                            	De esta forma lo puedo llamar abajo de acuerdo al tipo de reporte que deseo mostrar--->
+							<a data-toggle="collapse" href="#journals" class="btn btn-primary btn-border btn-round mr-2">Journals</a>
+							<a data-toggle="collapse" href="#books" class="btn btn-primary btn-border btn-round">Books</a>
+                            <a data-toggle="collapse" href="#databases" class="btn btn-primary btn-border btn-round">Data Bases</a>
+						</div>
+					</div>
+                        
+                    <!-------------------------------------------------------------------------------------->
+                    <!------------------------	COLLAPSED RESULTS        ----------------------------------->
+                    <!-------------------------------------------------------------------------------------->
+                    
+                	<!------ JOURNALS ----------------->
+                    <div class="collapse" id="journals">
+                        <div class="card-body">
+                            <!------------------	FORM   ----------------------------->
+                            <form method="POST" action="" enctype="multipart/form-data">
+                                <!-- Com oestoy enviado un archivo necesito darle un nombre aqui 
+                                	No debemos confunidr esto con el nombre del SUBMIT ---->
+      							<p><input type="file" name="file"></p>  
+                                	<!-- Le doy el mobre al form para que me lo identifique en la ruta cunado llega la request-->
+                                	<!-- Como estoy enviando diferentes FORMS necesito identificar cada una
+									porque cuando llegue el request a la ruta debe de saber que hacer con cada una-->
+                                <p><input type="submit"  name="journals" class="btn btn-success btn-round" value="journals"></p>                                    
+                            </form>
+                            <!------------------	/FORM   ----------------------------->
+                        </div>
+					</div>
+                    
+                    <!------ BOOKS ----------------->
+                    <div class="collapse" id="books">
+                        <div class="card-body">
+                            <!------------------	FORM   ----------------------------->
+                            <form method="POST" action="" enctype="multipart/form-data">  
+                                 <!-- Com oestoy enviado un archivo necesito darle un nombre aqui 
+                                	No debemos confunidr esto con el nombre del SUBMIT ---->
+      							<p><input type="file" name="file"></p> 
+                                <!-- Le doy el mobre al form para que me lo identifique en la ruta cunado llega la request-->
+                                <!-- Como estoy enviando diferentes FORMS necesito identificar cada una
+									porque cuando llegue el request a la ruta debe de saber que hacer con cada una-->
+                                <p><input type="submit" name="books" class="btn btn-success btn-round" value="books"></p>                                    
+                            </form>
+                            <!------------------	/FORM   ----------------------------->
+                        </div>
+					</div>
+                    
+                    <!------ DATA BASES ----------------->
+                    <div class="collapse" id="databases">
+                        <div class="card-body">
+                            <!------------------	FORM   ----------------------------->
+                            <form method="POST" action="" enctype="multipart/form-data"> 
+                                  <!-- Com oestoy enviado un archivo necesito darle un nombre aqui 
+                                	No debemos confunidr esto con el nombre del SUBMIT ---->
+      							<p><input type="file" name="file"></p>
+                                	<!-- Le doy el mobre al form para que me lo identifique en la ruta cunado llega la request-->
+                                   <!-- Como estoy enviando diferentes FORMS necesito identificar cada una
+									porque cuando llegue el request a la ruta debe de saber que hacer con cada una-->
+                                <p><input type="submit"  name="databases" class="btn btn-success btn-round" value="databases"></p>                                    
+                            </form>
+                            <!------------------	/FORM   ----------------------------->
+                        </div>
+					</div>
+                    <!-------------------------------------------------------------------------------------->
+                    <!------------------------	/COLLAPSED RESULTS        ---------------------------------->
+                    <!-------------------------------------------------------------------------------------->
+				</div>
+				<!------------------   /FIRST ROW  -------------------------------------->
+			</div>
+        <!-------------------------------------------------------------------------------------->
+        <!------------------------	 /Page Content      ---------------------------------------->
+        <!-------------------------------------------------------------------------------------->
+		</div>
+	</div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+	<!-- Atlantis DEMO methods, don't include it in your project! -->
+	<script src="/static/assets/js/setting-demo2.js"></script>
+
+{% endblock javascripts %}

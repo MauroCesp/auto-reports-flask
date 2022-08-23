@@ -1,0 +1,34 @@
+apt-get update
+apt-get install -y mysql-server
+service mysql start
+apt-get install -y php7.3-mbstring php7.3-mysqli phpmyadmin
+service apache2 restart
+
+
+
+apt-get install python3-dev default-libmysqlclient-dev build-essential
+and then finally
+
+pip install mysqlclient
+
+------------------------------------
+
+----> Le tenemos que dar todos los privilegios
+
+GRANT ALL PRIVILEGES ON `appseed_db` . * TO 'appseed_db_usr'@'localhost';
+
+
+----> Para verificar las tablas creadas para este user primero nos logeamos
+mysql -u appseed_db_usr -p
+
+----> ahora escojemos la DB 
+USE appseed_db
+
+-----> mostramos las tablas que tiene la DB
+SHOW TABLES
+
+----> Para ver los fields que tiene la tabla
+DESCRIBE Users;
+
+-----> para mostrar la information of the table
+SELECT * from Users;

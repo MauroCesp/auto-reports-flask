@@ -1,0 +1,188 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Web Stats {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+<!-------------------------------------------------------->
+<!-- -------------------  MODAL -------------------------->
+<!-- Hacemos un include modal para no tener todo el codigo aquí, porque hace muy confuso el código 
+	Todos los modals que utilizaremos estarán el /templates/home/modals 
+	Unicamente utilizamos el iclude para llamarlos desde ahi 
+	Tenemos que asegurarnos que el el BASE template incluimos el BLOCK para modals
+	Además tenemos que incluir el codigo JSquery para que funcione -->
+{% include 'home/modals/exampleModal.html' %}
+
+
+{% block content %}
+
+<div class="content">
+	<div class="page-inner">
+        <!-------------------------------------------------------------------------------------->
+        <!------------------------	 Page Header       ----------------------------------------->
+        <!-------------------------------------------------------------------------------------->
+		<div class="page-header">
+            <!-- This shows the main page where we are -->
+			<h4 class="page-title">Reports</h4>
+                
+            <!-------------------------------------------------------->
+			<ul class="breadcrumbs">
+				<li class="nav-home">
+					<a href="#">
+						<i class="flaticon-home"></i>
+					</a>
+				</li>
+				<li class="separator">
+					<i class="flaticon-right-arrow"></i>
+				</li>
+				<li class="nav-item">
+					<a href="#">Web Stats</a>
+				</li>
+				<li class="separator">
+					<i class="flaticon-right-arrow"></i>
+				</li>
+				<li class="nav-item">
+					<a href="#">New Report</a>
+				</li>
+			</ul>
+        	<!-------------------------------------------------------->
+                
+		</div>
+        <!-------------------------------------------------------------------------------------->
+        <!------------------------	 /Page Header      ----------------------------------------->
+        <!-------------------------------------------------------------------------------------->
+            
+            
+        <!-------------------------------------------------------------------------------------->
+        <!-----------------------	 Page Content      ----------------------------------------->
+        <!-------------------------------------------------------------------------------------->
+		<div class="row">
+                
+            <!------------------   FIRST ROW  -------------------------------------->
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+                        <div class="ml-md-auto py-2 py-md-0">
+                            <h4>Original report rows : {{rows}}</h4>
+                            <h4>Original report columns : {{cols}}</h4>
+                            <h4>New report rows : {{newRows}}</h4>
+                            <h4>New report columns : {{newCols}}</h4>
+                            <form method="post" action="/">
+    						</form>                         
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button>
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Open modal for @fat</button>
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Open modal for @getbootstrap</button>
+						</div>
+					</div>
+                        
+                    <!-------------------------------------------------------------------------------------->
+                    <!------------------------	COLLAPSED RESULTS        ----------------------------------->
+                    <!-------------------------------------------------------------------------------------->
+                    <div class="content">
+                        <div class="card-body">                       
+                            <div class="">
+                                <!-- Aqui utilizamos los BLUEPRINTS para no tener que repetir codigo
+                                	Tenemos que llamar al BLUPRINT que creamos y TEMPLATE ponemos el STR de la pagina que deseamos llamarlos
+                                	Es super utili porque cuando el codigo crece no es necesario crear más rutas
+                                	En este caso podemo llamar cualquier ruta dentro del archivo HOME
+                                	Si queremos llamar rutas de autenticacion necesitamos llamar al BLUEPRINT de authentication 
+                                	Le paso un primer parametro 'param1'. Si quiero enviar más parametros a la ruta continuo con esa linea 'param 1...2..3..4'
+									-->
+                                <a href="{{ url_for('home_blueprint.route_template', template = 'showData', param1 = x)}}">
+                                    <button type="button" class="btn btn-info" >View data</button>
+                                </a>
+                            </div>
+                        </div>
+					</div>
+                    <!-------------------------------------------------------------------------------------->
+                    <!------------------------	/COLLAPSED RESULTS        ---------------------------------->
+                    <!-------------------------------------------------------------------------------------->
+				</div>
+				<!------------------   /FIRST ROW  -------------------------------------->
+			</div>
+        <!-------------------------------------------------------------------------------------->
+        <!------------------------	 /Page Content      ---------------------------------------->
+        <!-------------------------------------------------------------------------------------->
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+<!------------------------------------------------------>
+<!------------------------------------------------------>
+
+<!-- Specific Page JS goes HERE  -->
+
+<!------------------------------------------------------>
+<!------------------------------------------------------>
+
+{% block javascripts %}
+<script>
+// ------------------ MODAL ------------------------//
+$('#renameModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var recipient = button.data('whatever') // Extract info from data-* attributes
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  var modal = $(this)
+  modal.find('.modal-title').text('New message to ' + recipient)
+  modal.find('.modal-body input').val(recipient)
+})
+// ------------------ /MODAL ------------------------//
+</script>
+
+
+<!-- ------------------ TABLE ------------------------>
+<!-- Atlantis DEMO methods, don't include it in your project! -->
+<script src="/static/assets/js/setting-demo2.js"></script>
+<script >
+	$(document).ready(function() {
+		$('#basic-datatables').DataTable({
+		});
+
+		$('#multi-filter-select').DataTable( {
+			"pageLength": 5,
+			initComplete: function () {
+				this.api().columns().every( function () {
+					var column = this;
+					var select = $('<select class="form-control"><option value=""></option></select>')
+					.appendTo( $(column.footer()).empty() )
+					.on( 'change', function () {
+						var val = $.fn.dataTable.util.escapeRegex(
+							$(this).val()
+							);
+
+						column
+						.search( val ? '^'+val+'$' : '', true, false )
+						.draw();
+					} );
+
+					column.data().unique().sort().each( function ( d, j ) {
+						select.append( '<option value="'+d+'">'+d+'</option>' )
+					} );
+				} );
+			}
+		});
+
+		// Add Row
+		$('#add-row').DataTable({
+			"pageLength": 5,
+		});
+
+		var action = '<td> <div class="form-button-action"> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+
+		$('#addRowButton').click(function() {
+			$('#add-row').dataTable().fnAddData([
+				$("#addName").val(),
+				$("#addPosition").val(),
+				$("#addOffice").val(),
+				action
+				]);
+			$('#addRowModal').modal('hide');
+
+		});
+	});
+</script>
+{% endblock javascripts %}
