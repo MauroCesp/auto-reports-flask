@@ -35,23 +35,23 @@ def configure_database(app):
         db.session.remove()
 
 
-        
+
 def create_app(config):
-    
+
     # Creamos un folder a donde van a ir a para los archivos temporales cuando los subamos.
     UPLOAD_FOLDER = 'apps/uploads/tempData'
-    
-    # Definimos el tipo de extensiones que vamos a acceptar. 
-    # That way you can make sure that users are not able to upload HTML files that would cause XSS problems (see Cross-Site Scripting (XSS)). 
+
+    # Definimos el tipo de extensiones que vamos a acceptar.
+    # That way you can make sure that users are not able to upload HTML files that would cause XSS problems (see Cross-Site Scripting (XSS)).
     # Also make sure to disallow .php files
     ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','xlsx'}
-    
+
     app = Flask(__name__)
     app.config.from_object(config)
     
     # Creamos el app config que vamos a utilizar en las rutas para poder enviar los archivos temporales.
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-    
+
     register_extensions(app)
     register_blueprints(app)
     configure_database(app)

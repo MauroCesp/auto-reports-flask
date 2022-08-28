@@ -38,10 +38,9 @@ from flask_login import login_required
 from jinja2 import TemplateNotFound
 
 ##########################  IMPORT APP ##################################
-# Es super necesario llamar al APP para poder utilizar las libreria propia 
+# Es super necesario llamar al APP para poder utilizar las libreria propia
 # Como cunado necesitamos llamar al directorio raiz de la applicacion a la hora de importar ficheros.
-from run import app 
-
+from run import app
 ##########################  EXCEL #######################################
 # Todas estas librerias me permiten ttrabajar con archivos de EXCEL
 import openpyxl
@@ -54,7 +53,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 #
 #
-#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	
+#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#	#
 #
 #-------------------------------------------------------------------------#
 #------------------------  INDEX  ---------------------------------------#
@@ -78,51 +77,51 @@ def index():
 @blueprint.route('/new-report', methods = ['GET','POST'])
 @login_required
 def entitlement():
-    # Como tengo tres tipos de reportes diferentes - journals,books,databases-  creé en la vista tres formularios 
-    # Necesito decirle a la ruta cual formulario deseo utilizar en cada caso. 
+    # Como tengo tres tipos de reportes diferentes - journals,books,databases-  creé en la vista tres formularios
+    # Necesito decirle a la ruta cual formulario deseo utilizar en cada caso.
     # Para ello en el valor VALUE del formulario especifique un identificador que utilizo aqui
-	if request.method == 'POST': 
-        
+	if request.method == 'POST':
+
 # --------- JOURNALS --------------
         # Necesito comparar el nombre del formulario que me llaga por la request con el VALUE de ese formulario
 		if request.form.get('journals') == 'journals':
             # Con el nombre que le dimos al archivo en el VIEW lo trabajamos aqui
 			f = request.files['file']
-            
+
             # ----------------------
             # Salvamos el archivo de manera segura
 			filename = secure_filename(f.filename)
-            
+
             # Con esta linea guardo el archivo en al ruta que definí en el INIT file -- apps/uploads/tempData
             # Aqui es donde llegan los archivos por defecto, de aquí los puedo mover a cualquier folder
             # Pero primero es importante poder encontrarlos
 			f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-			
+
             # Asi obtenemos el nombre del archivo
             #------------------------------------
             #		NEW COLUMN ----> Month-Year
             #------------------------------------
 			rows, cols, newRows, newCols = journal.new_column(filename)
-            
-			journal.set_table()
-			journal.set_pivot()
-            
+
+			#journal.set_table()
+			journal.test1()
+
 			return render_template('home/webstats/ui-newWSReport.html',rows = rows, cols = cols, newRows = newRows, newCols = newCols )
-        
+
 # --------- BOOKS --------------
         # Necesito comparar el nombre del formulario que me llaga por la request con el VALUE de ese formulario
 		elif request.form.get('books') == 'books':
             # Esta ruta  es solo para probar
-			return render_template('home/charts.html') 
+			return render_template('home/charts.html')
 # --------- DB --------------
-        # Si no es gallo es gallina 
+        # Si no es gallo es gallina
         # Como solo tengo tres formulario en la vista pues por defecto solo queda este para las bases de datos.
 		else:
             # Esta ruta  es solo para probar
-			return render_template('home/ui-buttons.html') 
+			return render_template('home/ui-buttons.html')
 	else:
         # Esta es la ruta a la que accedo cuando se solicita la pagina
-        # Es decir con el GET aqui llego 
+        # Es decir con el GET aqui llego
         # Una vez adentro es que realizo el post a esta ruta ENTITLEMENT
 		return render_template('home/webstats/ui-webStatsReport.html', segment='index')
 
@@ -142,9 +141,9 @@ def export_records():
 # El Objeto la llamamos "blueprint" entonces es el mobre que utilizamos en el decorador
 # One of the most used decorators is route. It allows you to associate a view function to a URL route.
 #
-# When you bind a function with the help of the @blueprint.route decorator, 
-# The blueprint will record the intention of registering the function ROUTE_TEMPLATE on the application when it’s later registered. 
-# Additionally it will prefix the endpoint of the function with the name of the blueprint which was given to the Blueprint constructor (in this case also HOME_BLUEPRINT). 
+# When you bind a function with the help of the @blueprint.route decorator,
+# The blueprint will record the intention of registering the function ROUTE_TEMPLATE on the application when it’s later registered.
+# Additionally it will prefix the endpoint of the function with the name of the blueprint which was given to the Blueprint constructor (in this case also HOME_BLUEPRINT).
 # The blueprint’s name does not modify the URL, only the endpoint.
 #
 #
@@ -157,7 +156,7 @@ def export_records():
 # En caso de que tengamos que pasarle informacion a cada pagina, solo tenemos que agregar otra variable dentro del HTML y l afuncion
 @blueprint.route('/<template>')
 @login_required
-# En este caso el paso 'template' que es el nombre del fichero que quiero abrir. 
+# En este caso el paso 'template' que es el nombre del fichero que quiero abrir.
 # Tambien le paso un parametro adicional que es 'data'. Representa cualquier dato adicional que le tenga que pasar a la vista
 # Se pueden pasar cuantos parametros sean necesarios pero es necesario sacarlos del request
 # Usualmente se declara el parametro deltro de la funcion, pero como es un afuncion compartida vamos a utilizar el GET.ARGS.GET para sacarlos
@@ -170,7 +169,7 @@ def route_template(template):
         # Detect the current page
         # Llamamos a la funcion GET_SEGMENT mas abajo para obtener el segment que en este caso sera 'index'
         segment = get_segment(request)
-        
+
         #------------ GET ARGUMENTS -------------#
         # Debemos de sacer los argumentos de esta forma para poderlos enviar a la ruta correspondiente
         # El nombre del argumento es igual pero en el HTML le asignamos valores diferentes de acuerdo a la vista que deseo mostrar
