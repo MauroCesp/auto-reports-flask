@@ -3,7 +3,7 @@
 // Setting Color
 
 $(window).resize(function() {
-	$(window).width(); 
+	$(window).width();
 });
 
 $('.changeBodyBackgroundFullColor').on('click', function(){
@@ -76,7 +76,7 @@ $('#BSbtnsuccess').filestyle({
 $('#BSbtninfo').filestyle({
 	buttonName : 'btn-info',
     buttonText : ' Select a File'
-}); 
+});
 
 
 function customCheckColor(){

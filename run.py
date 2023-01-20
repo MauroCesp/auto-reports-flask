@@ -17,6 +17,7 @@ config_dict = {
     'Debug'     : DebugConfig
 """
 from apps.config import config_dict
+#from flask_ngrok import run_with_ngrok
 #------------------------------------------------------------------------#
 # Esta es una funcion que importo desde el app/__init__.Copyright
 # Esto me inicializa la applicacion y los register_blueprints
@@ -64,4 +65,5 @@ if DEBUG:
 
 if __name__ == "__main__":
     # app.run(host='0.0.0.0',port=80)
-    app.run(host='0.0.0.0',port=5000)
+    #app.run(host='0.0.0.0',port=5000)
+    app.run()

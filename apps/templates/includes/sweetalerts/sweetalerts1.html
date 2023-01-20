@@ -1,0 +1,24 @@
+<!-- Begin alerts -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<script>
+  Swal.fire({
+    imageUrl: 'https://i.gifer.com/3eO0.gif',
+    imageWidth: 400,
+    imageHeight: 200,
+
+    backdrop: `
+      rgba(120,120,120,0.7)
+      url("static/assets/img/gestos/love.gif")
+      left top
+      no-repeat
+    `
+  })
+</script>
+
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<!-- End alerts -->

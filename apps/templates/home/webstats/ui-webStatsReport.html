@@ -1,9 +1,11 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Web Stats {% endblock %} 
+{% block title %} Web Stats {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+
+{% endblock stylesheets %}
 
 {% block content %}
 
@@ -15,118 +17,395 @@
 		<div class="page-header">
             <!-- This shows the main page where we are -->
 			<h4 class="page-title">Reports</h4>
-                
+
             <!-------------------------------------------------------->
-			<ul class="breadcrumbs">
-				<li class="nav-home">
-					<a href="#">
-						<i class="flaticon-home"></i>
-					</a>
-				</li>
-				<li class="separator">
-					<i class="flaticon-right-arrow"></i>
-				</li>
-				<li class="nav-item">
-					<a href="#">Web Stats</a>
-				</li>
-				<li class="separator">
-					<i class="flaticon-right-arrow"></i>
-				</li>
-				<li class="nav-item">
-					<a href="#">New Report</a>
-				</li>
-			</ul>
-        	<!-------------------------------------------------------->
-                
+				<ul class="breadcrumbs">
+					<li class="nav-home">
+						<a href="#">
+							<i class="flaticon-home"></i>
+						</a>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<a href="#">Web Stats</a>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<a href="#">New Report</a>
+					</li>
+				</ul>
+
 		</div>
         <!-------------------------------------------------------------------------------------->
         <!------------------------	 /Page Header      ----------------------------------------->
         <!-------------------------------------------------------------------------------------->
-            
-            
+
+
+				<!-------------------------------------------------------------------------------------->
+        <!------------------------	 TABS-CONTROLS     ----------------------------------------->
         <!-------------------------------------------------------------------------------------->
-        <!-----------------------	 Page Content      ----------------------------------------->
+
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs">
+				  <li><a class="nav-link active" data-toggle="tab" href="#journals">Journals</a></li>
+				  <li><a class="nav-link" data-toggle="tab" href="#books">Books</a></li>
+				  <li><a class="nav-link" data-toggle="tab" href="#databases">Databases</a></li>
+				</ul>
+				<!-------------------------------------------------------------------------------------->
+        <!------------------------	 /TABS-CONTROLS     ----------------------------------------->
         <!-------------------------------------------------------------------------------------->
-		<div class="row">
-                
-            <!------------------   FIRST ROW  -------------------------------------->
-			<div class="col-md-12">
-				<div class="card">
-					<div class="card-header">
-                        <div class="ml-md-auto py-2 py-md-0">
-                            <!-- Para poder mostrar la oipcion de upload en cada tipo de reporte necesito
-                            	darle un HREF a cada boton.
-                            	De esta forma lo puedo llamar abajo de acuerdo al tipo de reporte que deseo mostrar--->
-							<a data-toggle="collapse" href="#journals" class="btn btn-primary btn-border btn-round mr-2">Journals</a>
-							<a data-toggle="collapse" href="#books" class="btn btn-primary btn-border btn-round">Books</a>
-                            <a data-toggle="collapse" href="#databases" class="btn btn-primary btn-border btn-round">Data Bases</a>
+				<div class="tab-content">
+					<br>
+					<!------------------	JOURNALS   ----------------------------->
+				  <div class="tab-pane container active" id="journals">
+						<div class="card">
+							<div class="card-header" id = "">
+								<div class="card-body" id = "">
+										<!------------------	FORM   ----------------------------->
+										<form method="POST" action="" enctype="multipart/form-data" id = "report-form">
+											<!-----------------------	 ALERT MESSAGES  ----------------------------------------->
+											{% include "includes/sweetalerts/sweetalerts_gen.html" %}
+											<!-----------------------	 /ALERT MESSAGES  ----------------------------------------->
+											<!-- ---------------------------------------------------------->
+											<!-- SELECT GRAFIC-->
+											<!-- ---------------------------------------------------------->
+											<label><p><b>Graphic:</b></label>
+												<div class="form-group form-group-default">
+
+													<select name="comp_select" class="form-control" id="formGroupDefaultSelect">
+
+														<option value="xl3DColumn">3D column</option>
+														<option value="xlCylinderCol">3D cylindrical column</option>
+														<option value="xl3DLine">3D line</option>
+														<option value="xlLine">Line</option>
+
+													</select>
+												</div>
+
+												<!-- ---------------------------------------------------------->
+												<!-- SELECT Columns-->
+												<!-- ---------------------------------------------------------->
+												<label><p><b>Metrics:</b></label>
+												<div class="form-group">
+													<div class="selectgroup selectgroup-pills">
+
+														<label class="selectgroup-item">
+															<input type="checkbox" name="Sessions" value="Sessions" class="selectgroup-input" checked="" disabled>
+															<span class="selectgroup-button">Sessions</span>
+														</label>
+														<label class="selectgroup-item">
+															<input type="hidden" name="Searches_Regular" value="Searches_Regular" class="selectgroup-input" checked="" disabled>
+														</label>
+														<label class="selectgroup-item">
+															<input type="checkbox" name="Total_Item_Investigations" value="Total_Item_Investigations" class="selectgroup-input" checked="" disabled>
+															<span class="selectgroup-button">Total Item Investigations</span>
+														</label>
+														<label class="selectgroup-item">
+															<input type="checkbox" name="Unique_Item_Investigations" value="Unique_Item_Investigations" class="selectgroup-input">
+															<span class="selectgroup-button">Unique Item Investigations</span>
+														</label>
+														<label class="selectgroup-item">
+															<input type="checkbox" name="Total_Item_Requests" value="Total_Item_Requests" class="selectgroup-input">
+															<span class="selectgroup-button">Total Item Request</span>
+														</label>
+														<label class="selectgroup-item">
+															<input type="checkbox" name="Unique_Item_Requests" value="Unique_Item_Requests" class="selectgroup-input">
+															<span class="selectgroup-button">Unique Item Request</span>
+														</label>
+
+													</div>
+												</div>
+
+												<!-- ---------------------------------------------------------->
+												<!-- SELECT TABS-->
+												<!-- ---------------------------------------------------------->
+
+												<label><p><b>Tabs:</b></label>
+												<div class="form-group">
+													<div class="selectgroup selectgroup-pills">
+														<label class="selectgroup-item">
+															<input type="checkbox" name="" value="" class="selectgroup-input" checked="" disabled>
+															<span class="selectgroup-button">Journal stats</span>
+														</label>
+														<label class="selectgroup-item">
+															<input type="checkbox" name="Monthly_Trend" value="Monthly_Trend" class="selectgroup-input" checked="" disabled>
+															<span class="selectgroup-button">Monthly Trend</span>
+														</label>
+														<label class="selectgroup-item">
+															<input type="checkbox" name="Yearly_Comparison" value="Yearly_Comparison" class="selectgroup-input">
+															<span class="selectgroup-button">Yearly comparison</span>
+														</label>
+														<label class="selectgroup-item">
+															<input type="checkbox" name="Monthly_Trend1" value="Monthly_Trend1" class="selectgroup-input">
+															<span class="selectgroup-button">Monthly-by-Product</span>
+														</label>
+
+													</div>
+												</div>
+												<!-- ---------------------------------------------------------->
+												<!-- Optional-->
+												<!-- ---------------------------------------------------------->
+												<label><p><b>Optional settings:</b></label>
+												<div class="form-check">
+													<label class="form-check-label">
+														<input name = 'grid' class="form-check-input" type="checkbox" value="True">
+														<span class="form-check-sign">Use grid lines</span>
+													</label>
+
+													<label class="form-check-label">
+														<input name = 'image' class="form-check-input" type="checkbox" value="True" checked>
+														<span class="form-check-sign">Default logo</span>
+													</label>
+
+												</div>
+												<!-- Como estoy enviado un archivo necesito darle un nombre aqui
+													No debemos confunidr esto con el nombre del SUBMIT ---->
+
+												<label><p><b>Select file:</b></label>
+												<p><input type="file" name="file"></p>
+													<!-- Le doy el mobre al form para que me lo identifique en la ruta cunado llega la request-->
+													<!-- Como estoy enviando diferentes FORMS necesito identificar cada una
+													porque cuando llegue el request a la ruta debe de saber que hacer con cada una-->
+												<p><input type="submit"  name="journals" src="/static/assets/img/upload.gif" class="btn btn-outline-success btn-round" value="journals" ></p>
+
+										</form>
+										<!------------------	/FORM   ----------------------------->
+								</div>
+							</div>
 						</div>
 					</div>
-                        
-                    <!-------------------------------------------------------------------------------------->
-                    <!------------------------	COLLAPSED RESULTS        ----------------------------------->
-                    <!-------------------------------------------------------------------------------------->
-                    
-                	<!------ JOURNALS ----------------->
-                    <div class="collapse" id="journals">
-                        <div class="card-body">
-                            <!------------------	FORM   ----------------------------->
-                            <form method="POST" action="" enctype="multipart/form-data">
-                                <!-- Com oestoy enviado un archivo necesito darle un nombre aqui 
-                                	No debemos confunidr esto con el nombre del SUBMIT ---->
-      							<p><input type="file" name="file"></p>  
-                                	<!-- Le doy el mobre al form para que me lo identifique en la ruta cunado llega la request-->
-                                	<!-- Como estoy enviando diferentes FORMS necesito identificar cada una
-									porque cuando llegue el request a la ruta debe de saber que hacer con cada una-->
-                                <p><input type="submit"  name="journals" class="btn btn-success btn-round" value="journals"></p>                                    
-                            </form>
-                            <!------------------	/FORM   ----------------------------->
-                        </div>
+
+					<!------------------	BOOKS   ----------------------------->
+				  <div class="tab-pane container fade" id="books">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-body">
+										<!------------------	FORM   ----------------------------->
+										<form method="POST" action="" enctype="multipart/form-data">
+											<!-----------------------	 ALERT MESSAGES  ----------------------------------------->
+											<!-- include "includes/sweetalerts/sweetalerts-nofile.html" -->
+											<!-----------------------	 /ALERT MESSAGES  ----------------------------------------->
+											<!-- ---------------------------------------------------------->
+											<!-- SELECT GRAFIC-->
+											<!-- ---------------------------------------------------------->
+												<label><p><b>Graphic:</b></label>
+												<div class="form-group form-group-default">
+													<select name="comp_select" class="form-control" id="formGroupDefaultSelect">
+
+														<option value="xl3DColumn">3D column</option>
+														<option value="xlCylinderCol">3D cylindrical column</option>
+														<option value="xl3DLine">3D line</option>
+														<option value="xlLine">Line</option>
+
+													</select>
+												</div>
+
+												<!-- ---------------------------------------------------------->
+												<!-- SELECT Columns-->
+												<!-- ---------------------------------------------------------->
+												<label><p><b>Metrics:</b></label>
+													<div class="form-group">
+														<div class="selectgroup selectgroup-pills">
+
+															<label class="selectgroup-item">
+																<input type="checkbox" name="Sessions" value="Sessions" class="selectgroup-input" checked="" disabled>
+																<span class="selectgroup-button">Sessions</span>
+															</label>
+															<label class="selectgroup-item">
+																<input type="hidden" name="Searches_Regular" value="Searches_Regular" class="selectgroup-input" checked="" disabled>
+															</label>
+															<label class="selectgroup-item">
+																<input type="checkbox" name="Total_Item_Investigations" value="Total_Item_Investigations" class="selectgroup-input" checked="" disabled>
+																<span class="selectgroup-button">Total Item Investigations</span>
+															</label>
+															<label class="selectgroup-item">
+																<input type="checkbox" name="Unique_Item_Investigations" value="Unique_Item_Investigations" class="selectgroup-input">
+																<span class="selectgroup-button">Unique Item Investigations</span>
+															</label>
+															<label class="selectgroup-item">
+																<input type="checkbox" name="Total_Item_Requests" value="Total_Item_Requests" class="selectgroup-input">
+																<span class="selectgroup-button">Total Item Request</span>
+															</label>
+															<label class="selectgroup-item">
+																<input type="checkbox" name="Unique_Item_Requests" value="Unique_Item_Requests" class="selectgroup-input">
+																<span class="selectgroup-button">Unique Item Request</span>
+															</label>
+
+														</div>
+													</div>
+
+													<!-- ---------------------------------------------------------->
+													<!-- SELECT TABS-->
+													<!-- ---------------------------------------------------------->
+
+													<label><p><b>Tabs:</b></label>
+													<div class="form-group">
+														<div class="selectgroup selectgroup-pills">
+															<label class="selectgroup-item">
+																<input type="checkbox" name="" value="" class="selectgroup-input" checked="" disabled>
+																<span class="selectgroup-button">Book stats</span>
+															</label>
+															<label class="selectgroup-item">
+																<input type="checkbox" name="Monthly_Trend" value="Monthly_Trend" class="selectgroup-input" checked="">
+																<span class="selectgroup-button">Monthly Trend</span>
+															</label>
+															<label class="selectgroup-item">
+																<input type="checkbox" name="Yearly_Comparison" value="Yearly_Comparison" class="selectgroup-input">
+																<span class="selectgroup-button">Yearly comparison</span>
+															</label>
+															<label class="selectgroup-item">
+																<input type="checkbox" name="Monthly_Trend1" value="Monthly_Trend1" class="selectgroup-input">
+																<span class="selectgroup-button">Monthly-by-product</span>
+															</label>
+
+														</div>
+													</div>
+
+												<label><p><b>Optional settings:</b></label>
+												<div class="form-check">
+													<label class="form-check-label">
+														<input name = 'grid' class="form-check-input" type="checkbox" value="True">
+														<span class="form-check-sign">Use grid lines</span>
+													</label>
+
+													<label class="form-check-label">
+														<input name = 'image' class="form-check-input" type="checkbox" value="True" checked>
+														<span class="form-check-sign">Default logo</span>
+													</label>
+
+												</div>
+												<label><p><b>Select file:</b></label>
+												<!-- Como estoy enviado un archivo necesito darle un nombre aqui
+													No debemos confunidr esto con el nombre del SUBMIT ---->
+												<p><input type="file" name="file"></p>
+													<!-- Le doy el mobre al form para que me lo identifique en la ruta cunado llega la request-->
+													<!-- Como estoy enviando diferentes FORMS necesito identificar cada una
+													porque cuando llegue el request a la ruta debe de saber que hacer con cada una-->
+												<p><input type="submit"  name="books" class="btn btn-outline-success btn-round" value="books" ></p>
+										</form>
+										<!------------------	/FORM   ----------------------------->
+								</div>
+							</div>
+						</div>
 					</div>
-                    
-                    <!------ BOOKS ----------------->
-                    <div class="collapse" id="books">
-                        <div class="card-body">
-                            <!------------------	FORM   ----------------------------->
-                            <form method="POST" action="" enctype="multipart/form-data">  
-                                 <!-- Com oestoy enviado un archivo necesito darle un nombre aqui 
-                                	No debemos confunidr esto con el nombre del SUBMIT ---->
-      							<p><input type="file" name="file"></p> 
-                                <!-- Le doy el mobre al form para que me lo identifique en la ruta cunado llega la request-->
-                                <!-- Como estoy enviando diferentes FORMS necesito identificar cada una
-									porque cuando llegue el request a la ruta debe de saber que hacer con cada una-->
-                                <p><input type="submit" name="books" class="btn btn-success btn-round" value="books"></p>                                    
-                            </form>
-                            <!------------------	/FORM   ----------------------------->
-                        </div>
+
+					<!------------------	DATABASES   ----------------------------->
+				  <div class="tab-pane container fade" id="databases">
+						<div class="card">
+							<div class="card-header">
+								<div class="card-body">
+										<!------------------	FORM   ----------------------------->
+										<form method="POST" action="" enctype="multipart/form-data">
+											<!-----------------------	 ALERT MESSAGES  ----------------------------------------->
+											<!-- include "includes/sweetalerts/sweetalerts_gen.html" -->
+											<!-----------------------	 /ALERT MESSAGES  ----------------------------------------->
+											<!-- ---------------------------------------------------------->
+											<!-- SELECT GRAFIC-->
+											<!-- ---------------------------------------------------------->
+												<label><p><b>Graphic:</b></label>
+												<div class="form-group form-group-default">
+													<select name="comp_select" class="form-control" id="formGroupDefaultSelect">
+
+														<option value="xl3DColumn">3D column</option>
+														<option value="xlCylinderCol">3D cylindrical column</option>
+														<option value="xl3DLine">3D line</option>
+														<option value="xlLine">Line</option>
+
+													</select>
+												</div>
+												<!-- ---------------------------------------------------------->
+												<!-- SELECT Columns-->
+												<!-- ---------------------------------------------------------->
+												<label><p><b>Metrics:</b></label>
+													<div class="form-group">
+														<div class="selectgroup selectgroup-pills">
+															<label class="selectgroup-item">
+																<input type="checkbox" name="Sessions" value="Sessions" class="selectgroup-input" checked="" disabled>
+																<span class="selectgroup-button">Sessions</span>
+															</label>
+															<label class="selectgroup-item">
+																<input type="checkbox" name="Searches_Regular" value="Searches_Regular" class="selectgroup-input" checked="" disabled>
+																<span class="selectgroup-button">Searches Regular</span>
+															</label>
+															<label class="selectgroup-item">
+																<input type="hidden" name="Total_Item_Investigations" value="Total_Item_Investigations" class="selectgroup-input">
+															</label>
+															<label class="selectgroup-item">
+																<input type="checkbox" name="Total_Item_Requests" value="Total_Item_Requests" class="selectgroup-input">
+																<span class="selectgroup-button">Total Item Request</span>
+															</label>
+															<label class="selectgroup-item">
+																<input type="checkbox" name="Unique_Item_Requests" value="Unique_Item_Requests" class="selectgroup-input">
+																<span class="selectgroup-button">Unique Item Request</span>
+															</label>
+														</div>
+													</div>
+
+													<!-- ---------------------------------------------------------->
+													<!-- SELECT TABS-->
+													<!-- ---------------------------------------------------------->
+
+													<label><p><b>Tabs:</b></label>
+													<div class="form-group">
+														<div class="selectgroup selectgroup-pills">
+
+															<label class="selectgroup-item">
+																<input type="checkbox" name="" value="" class="selectgroup-input" checked="" disabled>
+																<span class="selectgroup-button">DB stats</span>
+															</label>
+
+															<label class="selectgroup-item">
+																<input type="checkbox" name="Monthly_Trend" value="Monthly_Trend" class="selectgroup-input" checked="" disabled>
+																<span class="selectgroup-button">Monthly Trend</span>
+															</label>
+															<label class="selectgroup-item">
+																<input type="checkbox" name="Yearly_Comparison" value="Yearly_Comparison" class="selectgroup-input">
+																<span class="selectgroup-button">Yearly comparison</span>
+															</label>
+															<label class="selectgroup-item">
+																<input type="checkbox" name="Monthly_Trend1" value="Monthly_Trend1" class="selectgroup-input">
+																<span class="selectgroup-button">Monthly-by-product</span>
+															</label>
+
+														</div>
+													</div>
+
+												<label><p><b>Optional settings:</b></label>
+												<div class="form-check">
+													<label class="form-check-label">
+														<input name = 'grid' class="form-check-input" type="checkbox" value="True">
+														<span class="form-check-sign">Use grid lines</span>
+													</label>
+
+													<label class="form-check-label">
+														<input name = 'image' class="form-check-input" type="checkbox" value="True" checked>
+														<span class="form-check-sign">Default logo</span>
+													</label>
+
+												</div>
+
+												<label><p><b>Select file:</b></label>
+												<!-- Como estoy enviado un archivo necesito darle un nombre aqui
+													No debemos confunidr esto con el nombre del SUBMIT ---->
+												<p><input type="file" name="file"></p>
+													<!-- Le doy el mobre al form para que me lo identifique en la ruta cunado llega la request-->
+													<!-- Como estoy enviando diferentes FORMS necesito identificar cada una
+													porque cuando llegue el request a la ruta debe de saber que hacer con cada una-->
+												<p><input type="submit"  name="databases" class="btn btn-outline-success btn-round" value="databases" ></p>
+										</form>
+										<!------------------	/FORM   ----------------------------->
+								</div>
+
+							</div>
+						</div>
 					</div>
-                    
-                    <!------ DATA BASES ----------------->
-                    <div class="collapse" id="databases">
-                        <div class="card-body">
-                            <!------------------	FORM   ----------------------------->
-                            <form method="POST" action="" enctype="multipart/form-data"> 
-                                  <!-- Com oestoy enviado un archivo necesito darle un nombre aqui 
-                                	No debemos confunidr esto con el nombre del SUBMIT ---->
-      							<p><input type="file" name="file"></p>
-                                	<!-- Le doy el mobre al form para que me lo identifique en la ruta cunado llega la request-->
-                                   <!-- Como estoy enviando diferentes FORMS necesito identificar cada una
-									porque cuando llegue el request a la ruta debe de saber que hacer con cada una-->
-                                <p><input type="submit"  name="databases" class="btn btn-success btn-round" value="databases"></p>                                    
-                            </form>
-                            <!------------------	/FORM   ----------------------------->
-                        </div>
-					</div>
-                    <!-------------------------------------------------------------------------------------->
-                    <!------------------------	/COLLAPSED RESULTS        ---------------------------------->
-                    <!-------------------------------------------------------------------------------------->
-				</div>
-				<!------------------   /FIRST ROW  -------------------------------------->
+				<!------------------	/TAB CONTROLER   ----------------------------->
 			</div>
-        <!-------------------------------------------------------------------------------------->
-        <!------------------------	 /Page Content      ---------------------------------------->
-        <!-------------------------------------------------------------------------------------->
-		</div>
+
 	</div>
 </div>
 
@@ -134,8 +413,9 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
-
 	<!-- Atlantis DEMO methods, don't include it in your project! -->
 	<script src="/static/assets/js/setting-demo2.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 {% endblock javascripts %}

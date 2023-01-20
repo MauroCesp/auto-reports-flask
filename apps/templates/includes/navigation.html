@@ -3,9 +3,10 @@
 
 			<!---------- LOGO HEADER --------------------------------->
 			<div class="logo-header" data-background-color="bg3">
-				
-				<a href="index.html" class="logo">
-                    <!-- Here is the logo that goes in the top left corner 
+
+				<!--<a href= {{ url_for('home_blueprint.index') }} class="logo"></a>-->
+
+                    <!-- Here is the logo that goes in the top left corner
                     	I had to add the height and width because the log owas not resizing it self.--->
 					<img src="/static/assets/img/Wolters.svg.png" height ="35" width="161" alt="navbar brand" class="navbar-brand">
 				</a>
@@ -25,11 +26,11 @@
 
 			<!-- Navbar Header -->
 			<nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2">
-				
+
 				{% if current_user.is_authenticated %}
 				<div class="container-fluid">
-                    
-                    <!---------- SEARCHING BAR --------------------------------->
+
+          <!---------- SEARCHING BAR
 					<div class="collapse" id="search-nav">
 						<form class="navbar-left navbar-form nav-search mr-md-3">
 							<div class="input-group">
@@ -42,8 +43,8 @@
 							</div>
 						</form>
 					</div>
-                    <!---------- /SEARCHING BAR --------------------------------->
-                    
+            --->
+
 					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
                         <!-------------------------------------------------->
 						<li class="nav-item toggle-nav-search hidden-caret">
@@ -55,14 +56,14 @@
 						<li class="nav-item dropdown hidden-caret">
 							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
 								<div class="avatar-sm">
-									<img src="/static/assets/img/wolterskluwer.jfif" alt="..." class="avatar-img rounded-circle">
+									<img src="/static/assets/img/profile1.png" alt="..." class="avatar-img rounded-circle">
 								</div>
 							</a>
 							<ul class="dropdown-menu dropdown-user animated fadeIn">
 								<div class="dropdown-user-scroll scrollbar-outer">
 									<li>
 										<div class="user-box">
-											<div class="avatar-lg"><img src="/static/assets/img/wolterskluwer.jfif" alt="image profile" class="avatar-img rounded"></div>
+											<div class="avatar-lg"><img src="/static/assets/img/profile1.png" alt="image profile" class="avatar-img rounded"></div>
 											<div class="u-text">
 												<h4>
 													{{ current_user.username }}
@@ -70,13 +71,13 @@
 												<p class="text-muted">
 													{{ current_user.email }}
 												</p>
-												<a href="#" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+												<!-- <a href="#" class="btn btn-xs btn-secondary btn-sm">View Profile</a>-->
 											</div>
 										</div>
 									</li>
 									<li>
-										<div class="dropdown-divider"></div>
-										<a class="dropdown-item" href="#">Account Setting</a>
+										<!-- <div class="dropdown-divider"></div>
+										<a class="dropdown-item" href="#">Account Setting</a>-->
 										<div class="dropdown-divider"></div>
 										<a class="dropdown-item" href="{{ url_for('authentication_blueprint.logout') }}">Logout</a>
 									</li>
@@ -91,4 +92,3 @@
 			</nav>
 			<!-- End Navbar -->
         </div>
-        

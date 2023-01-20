@@ -1,18 +1,29 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Web Stats {% endblock %} 
+{% block title %} Web Stats {% endblock %}
 
-<!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
 
-<!-------------------------------------------------------->
-<!-- -------------------  MODAL -------------------------->
-<!-- Hacemos un include modal para no tener todo el codigo aquí, porque hace muy confuso el código 
-	Todos los modals que utilizaremos estarán el /templates/home/modals 
-	Unicamente utilizamos el iclude para llamarlos desde ahi 
-	Tenemos que asegurarnos que el el BASE template incluimos el BLOCK para modals
-	Además tenemos que incluir el codigo JSquery para que funcione -->
-{% include 'home/modals/exampleModal.html' %}
+{% block stylesheets %}
+
+<style>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+	border: 1px solid black;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(150, 212, 212, 0.4);
+}
+
+
+</style>
+{% endblock stylesheets %}
 
 
 {% block content %}
@@ -25,7 +36,7 @@
 		<div class="page-header">
             <!-- This shows the main page where we are -->
 			<h4 class="page-title">Reports</h4>
-                
+
             <!-------------------------------------------------------->
 			<ul class="breadcrumbs">
 				<li class="nav-home">
@@ -45,70 +56,149 @@
 				<li class="nav-item">
 					<a href="#">New Report</a>
 				</li>
+				<li class="separator">
+					<i class="flaticon-right-arrow"></i>
+				</li>
+				<li class="nav-item">
+					<a href="#"> {{ type }} </a>
+				</li>
 			</ul>
         	<!-------------------------------------------------------->
-                
+
 		</div>
         <!-------------------------------------------------------------------------------------->
         <!------------------------	 /Page Header      ----------------------------------------->
         <!-------------------------------------------------------------------------------------->
-            
-            
+
+				{% include "includes/sweetalerts/sweetalerts_gen.html" %}
         <!-------------------------------------------------------------------------------------->
         <!-----------------------	 Page Content      ----------------------------------------->
         <!-------------------------------------------------------------------------------------->
-		<div class="row">
-                
-            <!------------------   FIRST ROW  -------------------------------------->
-			<div class="col-md-12">
-				<div class="card">
-					<div class="card-header">
-                        <div class="ml-md-auto py-2 py-md-0">
-                            <h4>Original report rows : {{rows}}</h4>
-                            <h4>Original report columns : {{cols}}</h4>
-                            <h4>New report rows : {{newRows}}</h4>
-                            <h4>New report columns : {{newCols}}</h4>
-                            <form method="post" action="/">
-    						</form>                         
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button>
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Open modal for @fat</button>
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Open modal for @getbootstrap</button>
-						</div>
-					</div>
-                        
-                    <!-------------------------------------------------------------------------------------->
-                    <!------------------------	COLLAPSED RESULTS        ----------------------------------->
-                    <!-------------------------------------------------------------------------------------->
-                    <div class="content">
-                        <div class="card-body">                       
-                            <div class="">
-                                <!-- Aqui utilizamos los BLUEPRINTS para no tener que repetir codigo
-                                	Tenemos que llamar al BLUPRINT que creamos y TEMPLATE ponemos el STR de la pagina que deseamos llamarlos
-                                	Es super utili porque cuando el codigo crece no es necesario crear más rutas
-                                	En este caso podemo llamar cualquier ruta dentro del archivo HOME
-                                	Si queremos llamar rutas de autenticacion necesitamos llamar al BLUEPRINT de authentication 
-                                	Le paso un primer parametro 'param1'. Si quiero enviar más parametros a la ruta continuo con esa linea 'param 1...2..3..4'
-									-->
-                                <a href="{{ url_for('home_blueprint.route_template', template = 'showData', param1 = x)}}">
-                                    <button type="button" class="btn btn-info" >View data</button>
-                                </a>
-                            </div>
-                        </div>
-					</div>
-                    <!-------------------------------------------------------------------------------------->
-                    <!------------------------	/COLLAPSED RESULTS        ---------------------------------->
-                    <!-------------------------------------------------------------------------------------->
+
+
+
+
+<div class="row">
+
+	<!-- --------------------  INFORMATION CARD -------------------------------------- -->
+	<div class="col-md-5">
+ 	 <div class="card" style="width:350px">
+
+ 				 <div class="card-block text-left">
+
+ 					 <!-- Aqui le paso como parametro la informacion acerca del nombre de la foto -->
+ 					 <center> <img class="card-img-top" src="/static/assets/img/company-logos/{{pic_path}}" style="width:50%" alt="{{institution_name}}"></center>
+ 				 </div>
+
+ 				 <div class="card-body">
+ 					 <br>
+ 					 <p class="card-title"><b>{{institution_name}}</b></p>
+ 					 <br>
+ 					 <p class="card-text"><b>Type: </b> {{type}}</p>
+
+ 					 <form class="form-inline" id="registerForm"  method="POST" action="{{ url_for('home_blueprint.download')}}" role="form">
+ 						 <!-- KEY:VALUE --------------- NAME:VALUE -->
+ 						 <input name="type" type='hidden' class="form-control" value={{type}}>
+ 						 <input name="user" type='hidden' class="form-control" value={{current_user.username}}>
+ 						 <input name="institution" type='hidden' class="form-control" value={{institution_name}}>
+ 						 <input name="find_path" type='hidden' class="form-control" value={{find_path}}>
+ 						 <button type="submit" class="btn btn-outline-success"><i class="fa fa-download" aria-hidden="true"></i></button>
+ 					 </form>
+ 				 </div>
+
+		<!-- --------------------  AVERAGE -------------------------------------- -->
+				{% if Yearly_Comparison == 'Yearly_Comparison' %}
+
+				 <div class="card" style="width:350px">
+
+					 <table style="width:100%">
+
+						 <tr>
+						 	 <th colspan="5">
+								 <h2><b>Average of {{type}}</b></h2></th>
+						 </tr>
+
+						 <tr>
+						 	 <th>
+								 Years:
+							 </th>
+							 	 <td colspan="5">
+								 		<p class="text-danger"><b>{% for i in count_years %}{{i}} ,{% endfor %}</b></p>
+								 </td>
+						 </tr>
+
+					   <tr>
+							   <td><p class="text-primary">Sessions</p></td>
+							   <td><p class="text-primary">T.I.R</p></td>
+							   <td><p class="text-primary">U.I.R</p></td>
+								 <td><p class="text-primary">T.I.I</p></td>
+							   <td><p class="text-primary">U.I.I</p></td>
+					   </tr>
+
+					   <tr>
+							 {% for i in average_yr %}
+							 <th><b>{{i}}</b></th>
+							 {% endfor %}
+
+					   </tr>
+
+					 </table>
+
+				 </div>
+				{% endif %}
+ 	 </div>
+  </div>
+
+
+
+	<!-- --------------------  INFORMATION CARD -------------------------------------- -->
+
+
+	<!-- --------------------  GRAPHS -------------------------------------- -->
+	<!-- v -->
+		<div id = 'tabs' class="col-md-7">
+			<!-- Este es el boton para enviar el reporte como PDF, llama una funcion de JS por medio del ID-->
+			<a href="#" id="downloadPdf">Download Report Page as PDF</a>
+
+			<!-- NAVEGADOR DE TABS-->
+			<ul class="nav nav-pills">
+
+				<!--  Utilizo el HREF para invocar a los tabs de las graficas -->
+				<li class="nav-item">
+				  <a href="#chart-year" href="#">Stats</a>
+				 </li>
+
+				 <li class="nav-item">
+				   <a href="#chart-month" href="#">Montly Trend</a>
+				 </li>
+
+			</ul>
+
+			<!--  CONTENEDOR DE LAS GRAFICAS-->
+			<div id="tab-container">
+				<!-- Meto cada gráfica con el nombre del tab al que pertenecen -->
+				<div id="chart-year" class="chart-container" style="position: relative; height:80vh; width:40vw">
+						<canvas id="chart"></canvas>
 				</div>
-				<!------------------   /FIRST ROW  -------------------------------------->
+				<!-- Meto cada gráfica con el nombre del tab al que pertenecen -->
+				<div id="chart-month" class="chart-container" style="position: relative; height:100vh; width:40vw">
+					  <canvas id="chart1"></canvas>
+				</div>
 			</div>
-        <!-------------------------------------------------------------------------------------->
-        <!------------------------	 /Page Content      ---------------------------------------->
-        <!-------------------------------------------------------------------------------------->
 		</div>
-	</div>
+	<!-- --------------------  /GRAPHS -------------------------------------- -->
+
+
 </div>
 
-{% endblock %}
+</div>
+</div>
+<!-------------------------------------------------------------------------------------->
+<!------------------------	 /Page Content      ---------------------------------------->
+<!-------------------------------------------------------------------------------------->
+
+
+{% endblock content %}
 
 <!------------------------------------------------------>
 <!------------------------------------------------------>
@@ -119,70 +209,284 @@
 <!------------------------------------------------------>
 
 {% block javascripts %}
-<script>
-// ------------------ MODAL ------------------------//
-$('#renameModal').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget) // Button that triggered the modal
-  var recipient = button.data('whatever') // Extract info from data-* attributes
-  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-  var modal = $(this)
-  modal.find('.modal-title').text('New message to ' + recipient)
-  modal.find('.modal-body input').val(recipient)
-})
-// ------------------ /MODAL ------------------------//
-</script>
-
-
-<!-- ------------------ TABLE ------------------------>
 <!-- Atlantis DEMO methods, don't include it in your project! -->
-<script src="/static/assets/js/setting-demo2.js"></script>
-<script >
-	$(document).ready(function() {
-		$('#basic-datatables').DataTable({
-		});
+<script src="/static/assets/js/setting-demo.js"></script>
+<script src="/static/assets/js/demo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
-		$('#multi-filter-select').DataTable( {
-			"pageLength": 5,
-			initComplete: function () {
-				this.api().columns().every( function () {
-					var column = this;
-					var select = $('<select class="form-control"><option value=""></option></select>')
-					.appendTo( $(column.footer()).empty() )
-					.on( 'change', function () {
-						var val = $.fn.dataTable.util.escapeRegex(
-							$(this).val()
-							);
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 
-						column
-						.search( val ? '^'+val+'$' : '', true, false )
-						.draw();
-					} );
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.debug.js"></script>
 
-					column.data().unique().sort().each( function ( d, j ) {
-						select.append( '<option value="'+d+'">'+d+'</option>' )
-					} );
-				} );
-			}
-		});
+<script>
+// ------------------ Loading state ------------------------//
+function loading(){
+            $("#loading").show();
+            $("#content").hide();
+        }
 
-		// Add Row
-		$('#add-row').DataTable({
-			"pageLength": 5,
-		});
+$("#tabs").tabs().on("click", '[role="tab"]', function() {
+				        $(this).closest("ul") // The current UL
+				    });
+				//----------------------- 3 DATASETS---------------------------------
 
-		var action = '<td> <div class="form-button-action"> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+							var CHART_COLORS = {
+							red: 'rgb(255, 99, 132)',
+							orange: 'rgb(255, 159, 64)',
+							yellow: 'rgb(255, 205, 86)',
+							green: 'rgb(75, 192, 192)',
+							blue: 'rgb(54, 162, 235)',
+							purple: 'rgb(153, 102, 255)',
+							grey: 'rgb(201, 203, 207)'
+							};
 
-		$('#addRowButton').click(function() {
-			$('#add-row').dataTable().fnAddData([
-				$("#addName").val(),
-				$("#addPosition").val(),
-				$("#addOffice").val(),
-				action
-				]);
-			$('#addRowModal').modal('hide');
+							var chart = document.getElementById('chart').getContext('2d');
 
-		});
-	});
+							var mytotalIncomeChart = new Chart(chart, {
+								type: 'bar',
+								data: {
+									labels: [{% for i in count_years %}'{{i}}',{% endfor %}],
+
+									datasets : [
+									//----Dataset 1
+									{
+										label: "TIR",
+										backgroundColor: 'rgba(0,255,0,0.3)',
+										borderColor: CHART_COLORS.green,
+										//data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
+										data: [{% for i in sum_TIR_yr%}'{{i}}',{% endfor %}]
+
+									},
+									//----Dataset 2
+									{
+										label: "TII",
+										backgroundColor: 'rgba(0,0,255,0.3)',
+										borderColor: CHART_COLORS.blue,
+										//data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
+										data: [{% for i in sum_TII_yr%}'{{i}}',{% endfor %}]
+
+									},
+
+									//----Dataset 23
+									{
+										label: "UIR",
+										backgroundColor: 'rgba(255, 0, 0, 0.3)',
+										borderColor: CHART_COLORS.red,
+										//data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
+										data: [{% for i in sum_UIR_yr%}'{{i}}',{% endfor %}]
+
+									},
+									//----Dataset 4
+									{
+										label: "UII",
+										backgroundColor: 'rgba(255,255,0,0.3)',
+										borderColor: CHART_COLORS.yellow,
+										//data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
+										data: [{% for i in sum_UII_yr%}'{{i}}',{% endfor %}]
+
+									},
+
+									//----Dataset 4
+									{
+										label: "Sessions",
+										backgroundColor: 'rgb(255,165,0)',
+										borderColor: CHART_COLORS.orange,
+										//data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
+										data: [{% for i in sum_session_yr%}'{{i}}',{% endfor %}]
+
+									},
+
+									],
+								},
+								options: {
+									responsive: true,
+									maintainAspectRatio: false,
+									legend: {
+										position: 'top',
+									},
+								}
+							});
+
+ 						//-------------------MONTH---------------------------------
+							var chart_month = document.getElementById('chart1').getContext('2d');
+
+							var mytotalIncomeChart = new Chart(chart_month, {
+								type: 'horizontalBar',
+								data: {
+									labels: [{% for i in count_months %}'{{i}}',{% endfor %}],
+
+									datasets : [
+									//----Dataset 1
+									{
+										label: "TIR",
+										backgroundColor: 'rgba(0,255,0,0.3)',
+										borderColor: CHART_COLORS.green,
+										//data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
+										data: [{% for i in sum_TII_month%}'{{i}}',{% endfor %}]
+
+									},
+									//----Dataset 2
+									{
+										label: "TII",
+										backgroundColor: 'rgba(0,0,255,0.3)',
+										borderColor: CHART_COLORS.blue,
+										//data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
+										data: [{% for i in sum_TIR_month%}'{{i}}',{% endfor %}]
+
+									},
+
+									//----Dataset 23
+									{
+										label: "UIR",
+										backgroundColor: 'rgba(255, 0, 0, 0.3)',
+										borderColor: CHART_COLORS.red,
+										//data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
+										data: [{% for i in sum_UIR_month%}'{{i}}',{% endfor %}]
+
+									},
+									//----Dataset 4
+									{
+										label: "UII",
+										backgroundColor: 'rgba(255,255,0,0.3)',
+										borderColor: CHART_COLORS.yellow,
+										//data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
+										data: [{% for i in sum_UII_month%}'{{i}}',{% endfor %}]
+
+									},
+
+									//----Dataset 5
+									{
+										label: "Sessions",
+										backgroundColor: 'rgb(255,165,0)',
+										borderColor: CHART_COLORS.yellow,
+										//data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
+										data: [{% for i in sum_session_month%}'{{i}}',{% endfor %}]
+
+									},
+
+									],
+								},
+								options: {
+									responsive: true,
+									maintainAspectRatio: false,
+									legend: {
+										position: 'top',
+									},
+								}
+							});
+				//-------------------------- EXTRA ACTIONS ---------------------------------------
+
+							const actions = [
+							  {
+							    name: 'Randomize',
+							    handler(chart) {
+							      chart.data.datasets.forEach(dataset => {
+							        dataset.data = Utils.numbers({count: chart.data.labels.length, min: -100, max: 100});
+							      });
+							      chart.update();
+							    }
+							  },
+							  {
+							    name: 'Add Dataset',
+							    handler(chart) {
+							      const data = chart.data;
+							      const dsColor = Utils.namedColor(chart.data.datasets.length);
+							      const newDataset = {
+							        label: 'Dataset ' + (data.datasets.length + 1),
+							        backgroundColor: Utils.transparentize(dsColor, 0.5),
+							        borderColor: dsColor,
+							        data: Utils.numbers({count: data.labels.length, min: -100, max: 100}),
+							      };
+							      chart.data.datasets.push(newDataset);
+							      chart.update();
+							    }
+							  },
+							  {
+							    name: 'Add Data',
+							    handler(chart) {
+							      const data = chart.data;
+							      if (data.datasets.length > 0) {
+							        data.labels = Utils.months({count: data.labels.length + 1});
+
+							        for (let index = 0; index < data.datasets.length; ++index) {
+							          data.datasets[index].data.push(Utils.rand(-100, 100));
+							        }
+
+							        chart.update();
+							      }
+							    }
+							  },
+							  {
+							    name: 'Remove Dataset',
+							    handler(chart) {
+							      chart.data.datasets.pop();
+							      chart.update();
+							    }
+							  },
+							  {
+							    name: 'Remove Data',
+							    handler(chart) {
+							      chart.data.labels.splice(-1, 1); // remove the label first
+
+							      chart.data.datasets.forEach(dataset => {
+							        dataset.data.pop();
+							      });
+
+							      chart.update();
+							    }
+							  }
+							];
+
+//-------------------------- DOWNLOAD PDF ---------------------------------------
+
+							$('#downloadPdf').click(function(event) {
+							  // get size of report page
+
+								// EL tab container es el que pillo para poder sacar de ahi l
+							  var reportPageHeight =
+								$('#tab-container').innerHeight();
+
+							  var reportPageWidth =
+								$('#tab-container').innerWidth();
+
+							  // create a new canvas object that we will populate with all other canvas objects
+							  var pdfCanvas = $('<canvas />').attr({
+							    id: "canvaspdf",
+							    width: reportPageWidth,
+							    height: reportPageHeight
+							  });
+
+							  // keep track canvas position
+							  var pdfctx = $(pdfCanvas)[0].getContext('2d');
+							  var pdfctxX = 0;
+							  var pdfctxY = 0;
+							  var buffer = 100;
+
+							  // for each chart.js chart
+							  $("canvas").each(function(index) {
+							    // get the chart height/width
+							    var canvasHeight = $(this).innerHeight();
+							    var canvasWidth = $(this).innerWidth();
+
+							    // draw the chart into the new canvas
+							    pdfctx.drawImage($(this)[0], pdfctxX, pdfctxY, canvasWidth, canvasHeight);
+							    pdfctxX += canvasWidth + buffer;
+
+							    // our report page is in a grid pattern so replicate that in the new canvas
+							    if (index % 2 === 1) {
+							      pdfctxX = 0;
+							      pdfctxY += canvasHeight + buffer;
+							    }
+							  });
+
+							  // create new pdf and add our new canvas as an image
+							  var pdf = new jsPDF('l', 'pt', [reportPageWidth, reportPageHeight]);
+							  pdf.addImage($(pdfCanvas)[0], 'PNG', 0, 0);
+
+							  // download the pdf
+							  pdf.save('filename.pdf');
+							});
 </script>
+
 {% endblock javascripts %}

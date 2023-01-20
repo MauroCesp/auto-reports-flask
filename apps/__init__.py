@@ -9,6 +9,9 @@ from flask_sqlalchemy import SQLAlchemy
 from importlib import import_module
 from werkzeug.utils import secure_filename
 
+from flask_ngrok import run_with_ngrok
+
+
 db = SQLAlchemy()
 login_manager = LoginManager()
 
@@ -47,8 +50,9 @@ def create_app(config):
     ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','xlsx'}
 
     app = Flask(__name__)
+    run_with_ngrok(app)
     app.config.from_object(config)
-    
+
     # Creamos el app config que vamos a utilizar en las rutas para poder enviar los archivos temporales.
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 

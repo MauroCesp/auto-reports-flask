@@ -1,0 +1,28 @@
+<!-- Begin alerts -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<script>
+  Swal.fire({
+    html: `<input type="text" id="group" class="swal2-input" placeholder="Please enter a group">`,
+    confirmButtonText: 'Find',
+    focusConfirm: false,
+    preConfirm: () => {
+      const group = Swal.getPopup().querySelector('#group').value
+      if (!group) {
+        Swal.showValidationMessage(`Please enter a group`)
+      }
+      return { group: group}
+    }
+  }).then((result) => {
+    Swal.fire(`
+      Group: ${result.value.group}
+    `.trim())
+  })
+</script>
+
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<!-- End alerts --yj>
